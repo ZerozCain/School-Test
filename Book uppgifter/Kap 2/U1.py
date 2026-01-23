@@ -1,5 +1,6 @@
 '''
 Docstring for Book uppgifter.Kap 2.U1
+
 Skriv ett program som beräknar hur många mil en bil har gått under de senaste året och bilen
 genomsnittliga bensinförbrukning per mil. När programmet klrs ska det fråga efter dagen mätarställning, 
 mätarstälningen för ett år sedan och hur många luter bensin som har förbrukats under året. Det ska
