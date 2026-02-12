@@ -64,22 +64,22 @@ def print_lista(namn):
 
     print('Skriver ut en lista')
     print('1: Hela listan')
-    print('2: Listan rowvis')
+    print('2: Listan radvis')
     print('3: Listan elementvis som matris')
     val = input('Hur vill du skriva ut listan? ')
 
     if val == '1':
         print('\nHela listan\n') 
-        print(namn) # Skriver ut hela listan i en utskrift utan rowbrytning för varje row
+        print(namn) # Skriver ut hela listan i en utskrift utan radbrytning för varje rad
 
     elif val == '2':
-        print('\nListan rowvis\n')
-        for row in namn: # Skriver ut hela listan rowvis med rowbrytning för varje row
+        print('\nListan radvis\n')
+        for row in namn: # Skriver ut hela listan radvis med radbrytning för varje rad
             print(row)
 
     elif val == '3':       
         print('\nListan som matris\n')
-        for row in namn: # Skriver ut hela listan elementvis med rowbrytning för varje row
+        for row in namn: # Skriver ut hela listan elementvis med radbrytning för varje rad
             for item in row:
                 print(f'{item:<20}', end=" ")
             print('')
@@ -87,7 +87,7 @@ def print_lista(namn):
     else:
         print('Ogiltigt val. Du kommer tillbaka till huvudmenyn.')
 
-print_lista(lgh)
+#print_lista(lgh)
 # Deluppgift II: Funktioner för deluppgift II i ordning.
 # Skriv din kod här:
 def sum_list(year, column, list):
@@ -97,7 +97,7 @@ def sum_list(year, column, list):
 
         if row[0] == str(year): # Cheacks that the year on row[0] is the same as the input year
 
-            if (type(row[column]) is float) or (type(row[column]) is float): # Makes sure that alla the values in row[column] can be summed
+            if (type(row[column]) is float) or (type(row[column]) is int): # Makes sure that alla the values in row[column] can be summed this check comes up in almost all my functions
                 sum += row[column]
 
     return sum
@@ -111,7 +111,7 @@ def average_list(year, column, list): # Copy of sum_list() function but with an 
 
     for row in list:
         if row[0] == str(year):
-            if (type(row[column]) is float) or (type(row[column]) is float):
+            if (type(row[column]) is float) or (type(row[column]) is int):
                 sum += row[column]
                 index += 1
 
@@ -119,15 +119,16 @@ def average_list(year, column, list): # Copy of sum_list() function but with an 
 
     return average
 
+
 # Deluppgift IV: Funktioner från deluppgift IV i ordning.
 # Skriv din kod här:
 def max_value(year, column, list):
-    max = float("-inf")
+    max = float("-inf") # Sets the base value of max to be equial to -infinity
     month = ""
 
-    for row in list: #refer to sum_list() function for this bit of code until the next comment
+    for row in list: # Refer to sum_list() function for this bit of code until the next comment
         if row[0] == str(year):
-            if (type(row[column]) is float) or (type(row[column]) is float):
+            if (type(row[column]) is float) or (type(row[column]) is int):
 
                 if row[column] >= max: # If the row[column] is greater then or equal to the max then it max that the new max as well as asigning the month of the current max
                     max = row[column]
@@ -136,15 +137,15 @@ def max_value(year, column, list):
 
 # Deluppgift V: Funktioner från deluppgift V i ordning.
 # Skriv din kod här:
-def min_value(year, column, list): # copy of max_value() but with min instead so star out by setting it to a large number
+def min_value(year, column, list): # Copy of max_value() but with min instead so start out by setting it to a large number i.e. +infinity
     min = float("inf")
     month = ""
 
     for row in list:
         if row[0] == str(year):
-            if (type(row[column]) is float) or (type(row[column]) is float):
+            if (type(row[column]) is float) or (type(row[column]) is int):
 
-                if row[column] >= min:
+                if row[column] <= min:
                     min = row[column]
                     month = row[1]
     return min, month
@@ -152,119 +153,111 @@ def min_value(year, column, list): # copy of max_value() but with min instead so
 
 # Deluppgift VI: Funktioner från deluppgift IV i ordning.
 # Skriv din kod här:
-def analysis(year, price_list):
+def analysis(year, price_list): # Makes a table of contets with, min, max and average values for each SE in the input list
+    customer = ""
+    if price_list is lgh: # Sets cutomer to either "lägenhetskund" or "villakund" depending on what list is input
+        customer = "lägenhetskund"
+    else:
+        customer = "villakund"
+
+    print("="*135) # Creates a divvision between what ever is writen before this function and the function 
+    print(f"{f"Analys av elpriserna för kategorin {customer} år {year}\n":^135}")
+    print(f"{"":15}{"Fast pris 3 år (öre/kWh)":^60}{"Rörligt pris (öre/kWh)":^60}")
+
+    print(f"{"Prisomr.":^15}", end="")
+    print(f"{f"{"Min":^9}--{"(mån)":^9}{"Max":^9}--{"(mån)":^9}{"Medel":^10}":^60}", end="")
+    print(f"{f"{"Min":^9}--{"(mån)":^9}{"Max":^9}--{"(mån)":^9}{"Medel":^10}":^60}")
+    
+    print("-"*135)
+
+    list_offset = 2 # list_offset makes sure that "år" and "månad" doesn't get mixed in to the for-loop
+    for SE in range(0, (len(price_list[0])-2), 2): # Makes SE be 0,2,4,6,... and forever on dependiing on how long the list that is inputed is
+        print(f"{price_list[0][SE+list_offset]:^15.3s}", end="")
+        
+        # Calculates all the for min, max and average as well as the months for min and max so that the print statement bellow is more readable
+        min_f, min_month_f = min_value(year,SE+list_offset,price_list)
+        max_f, max_month_f = max_value(year,SE+list_offset,price_list)
+        avg_f = average_list(year,SE+list_offset,price_list)
+        print(f"{f"{min_f:^9.2f}--{min_month_f:^9.3s}{max_f:^9.2f}--{max_month_f:^9.3s}{avg_f:^9.2f}":^60}", end="") # Prints the min, max and average for "Fast pris 3 år" and creates the correct spacing
+
+        # Exactly the same as above but for "Rörligt pris" instead
+        min_r, min_month_r = min_value(year,SE+list_offset+1,price_list)
+        max_r, max_month_r = max_value(year,SE+list_offset+1,price_list)
+        avg_r = average_list(year,SE+list_offset+1,price_list)
+        print(f"{f"{min_r:^9.2f}--{min_month_r:^9.3s}{max_r:^9.2f}--{max_month_r:^9.3s}{avg_r:^9.2f}":^60}", end="")
+        
+        print() # Creates a new line for the next SE
+
 
 # Huvudprogram med Meny. Använd menyrubriker enl. uppgiftsbeskrivningen.
 # Skriv din kod här:
+def inputs():
+    while True:
+        year_input = int(input("Välj året som du vill arbeta med, [2024-2025]: "))
+        if year_input in range(2024,2026):
+            break
+    while True:
+        column_input = (int(input("Välj en kolumn att arbeta med, 1-8: ")))
+        if column_input in range(1,9):
+            column_input += 1
+            break
+    while True:
+        list_input = (input("Välj listan som du vill arbeta med, Lägenhets lista [L] eller Villa lista [V]: ")).upper()
+        if list_input == "L" or list_input == "V":
+            break
+    return year_input, column_input, list_input
+
+
 def menu():
-    print("Program flr att läsa in och analysera resultatet i uppgift 1 - 6\n")
+    lists = {"L" : lgh, "V" : villa}
+    print("="*135)
+    print("\nProgram för att läsa in och analysera resultatet i uppgift 1 - 6\n\nDu kommer nu få några frågor som du måste svara på.\n")
     
-    print("1. Skriv ut listan.")
+    year_input, column_input, list_input = inputs()
+
+    print("\n1. Skriv ut listan.")
     print("2. Beräkna summa.")
     print("3. Beräkna medelvärde.")
     print("4. Hitta största värdet.")
     print("5. Hitta minsta värdet.")
     print("6. Analysera rörligt elpris valt år")
     print("7. Avsluta programmet.\n")
+    print("0. Välj ny lista, år och kolumn.\n")
 
     while True:
-        base_input = int(input("Välj ett menyalternativ [1–7]: "))
-        if base_input == [1,8]:
+        base_input = int(input("Välj ett menyalternativ [0–7]: "))
+        if base_input in range(0,8):
             break
 
     if base_input == 1:
-        while True:
-            awnser_1 = (input("Vilken lista vill du skriva ut, Lägenhets lista [L] eller Villa lista [V]")).upper()
-            if (awnser_1 == "L") or (awnser_1 == "V"):
-                if awnser_1 == "L":
-                    print(lgh)
-                else:
-                    print(villa)
-                break
-
+        print("="*135)
+        print(lists[list_input])  
 
     elif base_input == 2:
-
-        while True:
-            awnser_2_list = (input("Vilken lista vill du summer, Lägenhets lista [L] eller Villa lista [V]")).upper()
-            if (awnser_2_list == "L") or (awnser_2_list == "V"):
-                break
-        while True:
-            awnser_2_year = int(input("Vilken år vill du summera, 2024-2025: "))
-            if awnser_2_year == [2024,2026]:
-                break
-        while True:
-            awnser_2_column = int(input("Vilken kolumn vill du summera, 1-8: "))
-            if awnser_2_column == [1,9]:
-                break
-
-        print(f"{sum_list(awnser_2_year, awnser_2_column, awnser_2_list):.2f}")
-
+        print("="*135)
+        print(f"{sum_list(year_input, column_input, lists[list_input]):.2f}")
 
     elif base_input == 3:
-
-        while True:
-            awnser_3_list = (input("Vilken lista vill du ha medelvärdet på, Lägenhets lista [L] eller Villa lista [V]")).upper()
-            if (awnser_3_list == "L") or (awnser_3_list == "V"):
-                break
-        while True:
-            awnser_3_year = int(input("Vilken år vill du ha medelvärdet på, 2024-2025: "))
-            if awnser_3_year == [2024,2026]:
-                break
-        while True:
-            awnser_3_column = int(input("Vilken kolumn vill du ha medelvärdet, på 1-8: "))
-            if awnser_3_column == [1,9]:
-                break
-
-        print(f"{average_list(awnser_3_year, awnser_3_column, awnser_3_list):.2f}")
-
+        print("="*135)
+        print(f"{average_list(year_input, column_input, lists[list_input]):.2f}")
 
     elif base_input == 4:
-
-        while True:
-            awnser_4_list = (input("Vilken lista vill du ha medelvärdet på, Lägenhets lista [L] eller Villa lista [V]")).upper()
-            if (awnser_4_list == "L") or (awnser_4_list == "V"):
-                break
-        while True:
-            awnser_4_year = int(input("Vilken år vill du ha medelvärdet på, 2024-2025: "))
-            if awnser_4_year == [2024,2026]:
-                break
-        while True:
-            awnser_4_column = int(input("Vilken kolumn vill du ha medelvärdet, på 1-8: "))
-            if awnser_4_column == [1,9]:
-                break
-
-        print(f"{max_value(awnser_4_year, awnser_4_column, awnser_4_list):.2f}")
-
+        print("="*135)
+        print(f"{max_value(year_input, column_input, lists[list_input]):.2f}")
 
     elif base_input == 5:
-
-        while True:
-            awnser_5_list = (input("Vilken lista vill du ha medelvärdet på, Lägenhets lista [L] eller Villa lista [V]")).upper()
-            if (awnser_5_list == "L") or (awnser_5_list == "V"):
-                break
-        while True:
-            awnser_5_year = int(input("Vilken år vill du ha medelvärdet på, 2024-2025: "))
-            if awnser_5_year == [2024,2026]:
-                break
-        while True:
-            awnser_5_column = int(input("Vilken kolumn vill du ha medelvärdet, på 1-8: "))
-            if awnser_5_column == [1,9]:
-                break
-
-        print(f"{min_value(awnser_5_year, awnser_5_column, awnser_5_list):.2f}")
-
+        print("="*135)
+        print(f"{min_value(year_input, column_input, lists[list_input]):.2f}")
 
     elif base_input == 6:
-        lists = {"L" : lgh, "V" : villa}
-        
-        while True:
-            awnser_6_list = (input("Vilken lista vill du ha medelvärdet på, Lägenhets lista [L] eller Villa lista [V]")).upper()
-            if (awnser_6_list == "L") or (awnser_6_list == "V"):
-                break
-        while True:
-            awnser_6_year = int(input("Vilken år vill du ha medelvärdet på, 2024-2025: "))
-            if awnser_6_year == [2024,2026]:
-                break
-
+        analysis(year_input, lists[list_input])
+    
     elif base_input == 7:
+        print("="*135)
+        print("Program avslutat")
+        exit
+
+    elif base_input == 0:
+        menu()
+
+menu()
