@@ -258,6 +258,7 @@ def menu():
         exit
 
     elif base_input == 0:
+        print("\n"*50)
         menu()
 
 menu()
