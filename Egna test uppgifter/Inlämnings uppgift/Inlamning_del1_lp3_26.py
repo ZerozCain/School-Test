@@ -340,7 +340,42 @@ def menu():
 
             print("Program avslutat")
             break
+<<<<<<< HEAD
         
         base_input = None
+=======
+
+    if base_input == 1:
+        print("="*135)
+        print(lists[list_input])  
+
+    elif base_input == 2:
+        print("="*135)
+        print(f"{sum_list(year_input, column_input, lists[list_input]):.2f}")
+
+    elif base_input == 3:
+        print("="*135)
+        print(f"{average_list(year_input, column_input, lists[list_input]):.2f}")
+
+    elif base_input == 4:
+        print("="*135)
+        print(f"{max_value(year_input, column_input, lists[list_input]):.2f}")
+
+    elif base_input == 5:
+        print("="*135)
+        print(f"{min_value(year_input, column_input, lists[list_input]):.2f}")
+
+    elif base_input == 6:
+        analysis(year_input, lists[list_input])
+    
+    elif base_input == 7:
+        print("="*135)
+        print("Program avslutat")
+        exit
+
+    elif base_input == 0:
+        print("\n"*50)
+        menu()
+>>>>>>> dc44239857042a641834006374743bcc3b626ca2
 
 menu()
