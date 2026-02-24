@@ -96,9 +96,6 @@ def print_lista(namn):
                 print(f"{item:<20}", end=" ")
             print("")
 
-    else:
-        print("Ogiltigt val. Du kommer tillbaka till huvudmenyn.")
-
 # Deluppgift II: Funktioner för deluppgift II i ordning.
 # Skriv din kod här:
 def sum_list(year, column, list):
@@ -185,7 +182,7 @@ def analysis(year, price_list): # Makes a table of contets with, min, max and av
     for SE in range(0, (len(price_list[0])-2), 2): # Makes SE be 0,2,4,6,... and forever on dependiing on how long the list that is inputed is
         print(f"{price_list[0][SE+list_offset]:^15.3s}", end="")
         
-        # Calculates all the for min, max and average as well as the months for min and max so that the print statement bellow is more readable
+        # Calculates all the "Fast pris 3 år" min, max and average as well as the months for min and max so that the print statement bellow is more readable
         min_f, min_month_f = min_value(year,SE+list_offset,price_list)
         max_f, max_month_f = max_value(year,SE+list_offset,price_list)
         avg_f = average_list(year,SE+list_offset,price_list)
@@ -250,13 +247,7 @@ def list_input():
 def inputs(menu_option):
     if menu_option == 1:
         return list_input()
-    elif menu_option == 2:
-        return year_input(), column_input(), list_input()
-    elif menu_option == 3:
-        return year_input(), column_input(), list_input()
-    elif menu_option == 4:
-        return year_input(), column_input(), list_input()
-    elif menu_option == 5:
+    elif menu_option in range(2,6):
         return year_input(), column_input(), list_input()
     elif menu_option == 6:
         return year_input(), list_input()
@@ -267,7 +258,6 @@ def menu():
     print("="*135)
     print("\nProgram för att läsa in och analysera resultatet i uppgift 1 - 6\n\nDu kommer nu få några frågor som du måste svara på.\n")
     
-
     while True:
         print("\n1. Skriv ut listan.")
         print("2. Beräkna summa.")
@@ -340,42 +330,5 @@ def menu():
 
             print("Program avslutat")
             break
-<<<<<<< HEAD
-        
-        base_input = None
-=======
-
-    if base_input == 1:
-        print("="*135)
-        print(lists[list_input])  
-
-    elif base_input == 2:
-        print("="*135)
-        print(f"{sum_list(year_input, column_input, lists[list_input]):.2f}")
-
-    elif base_input == 3:
-        print("="*135)
-        print(f"{average_list(year_input, column_input, lists[list_input]):.2f}")
-
-    elif base_input == 4:
-        print("="*135)
-        print(f"{max_value(year_input, column_input, lists[list_input]):.2f}")
-
-    elif base_input == 5:
-        print("="*135)
-        print(f"{min_value(year_input, column_input, lists[list_input]):.2f}")
-
-    elif base_input == 6:
-        analysis(year_input, lists[list_input])
-    
-    elif base_input == 7:
-        print("="*135)
-        print("Program avslutat")
-        exit
-
-    elif base_input == 0:
-        print("\n"*50)
-        menu()
->>>>>>> dc44239857042a641834006374743bcc3b626ca2
 
 menu()
