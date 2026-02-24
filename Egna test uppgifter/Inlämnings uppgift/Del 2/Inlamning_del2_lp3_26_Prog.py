@@ -4,6 +4,7 @@
 # Placera dina modulimpoter här:
 import csv
 import matplotlib.pyplot as plt
+from matplotlib.pyplot import figure
 
 # Placera ev. nya funktioner som används i flera deluppgifter här:
 # Skriv din ev. kod här:
@@ -247,7 +248,7 @@ def plot_rorlig_fast_1(year, price_r):
 
     for row in lgh_data:
         if row[0] == str(year):
-            x.append(row[1][0:3])
+            x.append(row[1][:3])
             y_fast_1_lgh.append(row[price_r+1])
             y_rorlig_lgh.append(row[price_r+3])
     for row in villa_data:
@@ -255,12 +256,14 @@ def plot_rorlig_fast_1(year, price_r):
             y_fast_1_villa.append(row[price_r+1])
             y_rorlig_villa.append(row[price_r+3])
 
+    figure(figsize=(10,10))
+
     plt.plot(x, y_fast_1_lgh, color = "green", label = "Fast 1 år - Lgh")
     plt.plot(x, y_fast_1_villa, color = "red", label = "Fast 1 år - Villa")
     plt.plot(x, y_rorlig_lgh, color = "blue", label = "Rörlig - Lgh")
     plt.plot(x, y_rorlig_villa, color = "purple", label = "Rörlig - Villa")
     
-    plt.legend()
+    plt.legend(loc = 2)
     plt.grid()
     plt.title(f"Elpriser frisområde {lgh_data[0][price_r+1][0:3]} år {year}")
 
@@ -274,7 +277,22 @@ def plot_rorlig_fast_1(year, price_r):
 # Deluppgift 4: Funktioner för deluppgift 4 i ordning.
 # Skriv din kod här:
 def change_faktor(year, column, price_list):
-    pass
+    x_month = []
+    y_change = []
+
+    
+
+    if year == 2018:
+        last_month = None
+    else:
+        last_month = price_list[column+1]
+    
+    for row in price_list:
+        if row[0] == str(year):
+            x_month.append(row[1][:3])
+            pass
+
+
 
 # Deluppgift 5: Funktioner för deluppgift 5 i ordning.
 # Skriv din kod här:
@@ -311,7 +329,7 @@ def menu():
             data["L"] = file_to_list("lghpriser.csv")
             lgh_data = file_to_list("lghpriser.csv")
             print("Skriver ut lgh data:\n")
-            for row in data["L"][:3]:
+            for row in data["L"]:
                 print(row)
 
             data["V"] = file_to_list("villapriser.csv")
