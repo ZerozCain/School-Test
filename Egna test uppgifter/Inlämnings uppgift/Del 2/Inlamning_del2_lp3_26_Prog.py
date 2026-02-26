@@ -8,9 +8,22 @@ from matplotlib.pyplot import figure
 
 # Placera ev. nya funktioner som används i flera deluppgifter här:
 # Skriv din ev. kod här:
-
 lgh_data = []
 villa_data = []
+
+def load_files():
+    global lgh_data, villa_data
+    data["L"] = file_to_list("lghpriser.csv")
+    lgh_data = file_to_list("lghpriser.csv")
+    print("Skriver ut lgh data:\n")
+    for row in data["L"][:3]:
+        print(row)
+
+    data["V"] = file_to_list("villapriser.csv")
+    villa_data = file_to_list("villapriser.csv")
+    print("Skriver ut lgh data:\n")
+    for row in data["V"][:3]:
+        print(row)
 
 def year_input():
     while True:
@@ -142,13 +155,11 @@ def file_to_list(file):
     work_list = []
     
     for row in csv_reader:
-        index = 2
-        for i in row[2:]:
+        for i in range(2, len(row)):
             try:
-                row[index] = float(row[index])
+                row[i] = float(row[i])
             except:
                 pass
-            index += 1
         work_list.append(row)
     csv_file.close()
     return work_list
@@ -200,7 +211,7 @@ def analys(year, price_list):
 
     titel = f"Analys av elpriserna för kategorin {customer} år {year}"
 
-    print(f"{titel:^210}")
+    print(f"\n{titel:^210}")
     print(f"{"="*len(titel):^210}")
     print(f"{"Fast pris 1 år (öre/Kwh)":^60}{"Fast pris 3 år (öre/Kwh)":^50}{"Rörligt pris (öre/Kwh)":^50}{"Anvisat pris (öre/Kwh)":^50}")
     print(f"{"Prisomr.":<10}{"Max - ":>10}{"(Mån)":<10}{"Min - ":>10}{"(mån)":<10}{"Medel |":^10}", end = "")
@@ -276,22 +287,58 @@ def plot_rorlig_fast_1(year, price_r):
 
 # Deluppgift 4: Funktioner för deluppgift 4 i ordning.
 # Skriv din kod här:
+def change_factor_ekv(price, price_prev):
+    change = ((price - price_prev)/price_prev)*100
+    return change
+
 def change_faktor(year, column, price_list):
     x_month = []
     y_change = []
 
-    
-
     if year == 2018:
         last_month = None
+        year_row = 1
     else:
-        last_month = price_list[column+1]
-    
-    for row in price_list:
+        for i in range(len(price_list)):
+            try:
+                if price_list[i].index(str(year)) == 0:
+                    year_row = i
+                    last_month = price_list[i-1][column]
+                    break
+            except:
+                pass
+    for row in price_list[year_row:]:
+
+        if last_month == None:
+            for index in price_list:
+                if index[0] == str(year):
+                    last_month = index[column]
+                    break
+            continue
+
         if row[0] == str(year):
             x_month.append(row[1][:3])
-            pass
+            y_change.append(change_factor_ekv(row[column], last_month))
+            last_month = row[column]
+            print(last_month)
+            print(x_month)
+            print(y_change)
+        if row[0] == str(year+1):
+            break
+    
+    figure(figsize=(10,10))
 
+    plt.legend(loc = 2)
+    plt.grid()
+    plt.title(f"Månatlig föränding av elpriset för {lgh_data[0][column]}")
+
+    plt.bar(x_month, y_change, color = "red", width = 0.4)
+    plt.xlabel("Månad")
+    plt.ylabel("Föränding [%]")
+
+    plt.show()
+            
+    
 
 
 # Deluppgift 5: Funktioner för deluppgift 5 i ordning.
@@ -301,7 +348,7 @@ def change_faktor(year, column, price_list):
 # Huvudprogram med Meny för deluppgift 0. Använd menyrubriker enl. uppgiftsbeskrivningen.
 # Skriv din kod här:
 def menu():
-    global lgh_data, villa_data
+    global lgh_data, villa_data, data
     data = {"L" : None, "V" : None}
     work_list = None
 
@@ -326,17 +373,7 @@ def menu():
             print("\033[0;37;40m")
 
         if base_input == 1:
-            data["L"] = file_to_list("lghpriser.csv")
-            lgh_data = file_to_list("lghpriser.csv")
-            print("Skriver ut lgh data:\n")
-            for row in data["L"]:
-                print(row)
-
-            data["V"] = file_to_list("villapriser.csv")
-            villa_data = file_to_list("villapriser.csv")
-            print("Skriver ut lgh data:\n")
-            for row in data["V"][:3]:
-                print(row)
+            load_files()
             
             base_input = None
 
@@ -354,7 +391,7 @@ def menu():
 
         elif (base_input == 4):
             year, column, price_list = inputs(base_input)
-            change_faktor(year, column, price_list)
+            change_faktor(year, column, data[price_list])
 
             base_input = None
 
