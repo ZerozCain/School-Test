@@ -160,68 +160,58 @@ def print_lista(namn): #Låter användaren printa hela eller delar av den valda 
 # Deluppgift II: Funktioner för deluppgift II i ordning.
 # Skriv din kod här:
 def summa_ekv(namn,year,kolumn):  #Funktion som sumerar en hel kolumn 
-    summa = 0         
-    if year == "2024": #Om det är 2024 som jämförs så kommer summa formeln starta ifrån rad 
-        i = 1 #I är lika med raden i listan som jämförs
-        while i <= 12:
-            summa = namn[i][kolumn] + summa
-            i+=1
-        
-    if year == "2025": #Om det istället är 2025 som jämförs så kommer summa formlen  att starta ifrån rad 13
-        i = 13 #I är raden i listan som jämförs 
-        while i <= 24:
-            summa = namn[i][kolumn] + summa
-            i+=1     
-    return(summa)
+    sum = 0 # Declaring the variable sum and making it equal to 0
+
+    for row in namn:
+
+        if row[0] == str(year): # Cheacks that the year on row[0] is the same as the input year
+
+            if (type(row[kolumn]) is float) or (type(row[kolumn]) is int): # Makes sure that alla the values in row[column] can be summed this check comes up in almost all my functions
+                sum += row[kolumn]
+
+    return sum
+
+
 # Deluppgift III: Funktioner för deluppgift III i ordning.
 # Skriv din kod här:
 def medelvarde_ekv(namn,year,kolumn): #Tar summan från tidigare funktion och delar den på antalet månader som ett år har 
     summa = summa_ekv(namn,year,kolumn)
     medel = summa/12
     return(round(medel,2)) #Runda av medelvärdet till två desimaler 
+
      
 # Deluppgift IV: Funktioner från deluppgift IV i ordning.
 # Skriv din kod här:
-def storsta_ekv(namn,year,kolumn): #Jämför alla talen i den angivan kolumen och hittar det största talet
-    storsta = 0
-    
-    if year == "2024": #Om det är 2024 som jämförs så kommer summa formeln starta ifrån rad 
-        i = 1 #i är lika med raden i listan som jämförs
-        while i <= 12:
-            if storsta < namn[i][kolumn]:
-                storsta = namn[i][kolumn]
-                manad = namn[i][1]
-            i+=1
-            
-    if year == "2025": #Om det istället är 2025 som jämförs så kommer summa formlen  att starta ifrån rad 13
-        i = 13 #i är lika med raden i listan som jämförs
-        while i <= 24:
-            if storsta < namn[i][kolumn]:
-                storsta = namn[i][kolumn]
-                manad = namn[i][1]
-            i+=1
-    return(round(storsta,2),manad) #Rundar av till två decimaler
+def storsta_ekv(namn,year,kolumn): # Modifierad så att fungerar med nya störe listorna
+    max = float("-inf")
+    month = ""
+
+    for row in namn:
+        if row[0] == str(year):
+            if (type(row[kolumn]) is float) or (type(row[kolumn]) is int):
+
+                if row[kolumn] >= max:
+                    max = row[kolumn]
+                    month = row[1]
+    return max, month
+
+
 # Deluppgift V: Funktioner från deluppgift V i ordning.
 # Skriv din kod här:
-def minsta_ekv(namn,year,kolumn): #Jämför alla talen i en angiven kolumn och hittar  det minsta talet
-    if year == "2024": #Om det är 2024 som jämförs så kommer summa formeln starta ifrån rad 
-        i = 1 #i är lika med raden i listan som jämförs
-        minsta = namn[i][kolumn]
-        while i <= 12:
-            if minsta > namn[i][kolumn]:
-                minsta = namn[i][kolumn]
-                manad = namn[i][1]
-            i+=1
-            
-    if year == "2025": #Om det istället är 2025 som jämförs så kommer summa formlen  att starta ifrån rad 13
-        i = 13 #i är lika med raden i listan som jämförs
-        minsta = namn[i][kolumn]
-        while i <= 24:
-            if minsta < namn[i][kolumn]:
-                minsta = namn[i][kolumn]
-                manad = namn[i][1]
-            i+=1
-    return(round(minsta,2),manad)
+def minsta_ekv(namn,year,kolumn): # Modifierad så att fungerar med nya störe listorna
+    min = float("inf")
+    month = ""
+
+    for row in namn:
+        if row[0] == str(year):
+            if (type(row[kolumn]) is float) or (type(row[kolumn]) is int):
+
+                if row[kolumn] <= min:
+                    min = row[kolumn]
+                    month = row[1]
+    return min, month
+
+
 # Deluppgift VI: Funktioner från deluppgift IV i ordning.
 # Skriv din kod här:
 def analys(namn,year,levnad):
@@ -251,79 +241,3 @@ def analys(namn,year,levnad):
 # Huvudprogram med Meny. Använd menyrubriker enl. uppgiftsbeskrivningen.
 # Skriv din kod här:
 #Loop för menyn
-while True: 
-    print(f"-"*(64))
-    print(f"Program för att läsa in och analysera resultatet i uppgift 1 - 6")
-    print(f"="*(64))
-    print(f"1. Skriv ut listan.")
-    print(f"2. Beräkna summa.")
-    print(f"3. Beräkna medelvärde.")
-    print(f"4. Hitta största värdet.")
-    print(f"5. Hitta minsta värdet.")
-    print(f"6. Analysera rörligt elpris valt år.")
-    print(f"7. Avsluta program.")
-    print(f"-"*(64))
-    user_choice_menu = input(f"\nVälj ett menyalternativ (1-7): ") #Användaren får välja mellan 
-    if user_choice_menu == "1": #Om användaren skriver "1" så kommer de att påkalla  print_lista funktionen
-        namn = bostad_val()
-        print_lista(namn)
-        break 
-    elif user_choice_menu == "2": #Om användaren skriver "2" så kommer de att påkalla summa funktionen
-        omrade = omrade_val() 
-        prisklass = prisklass_val() #Dessa funktioner är det som gör att användaren  få möjligheten till att välja 
-        year = year_choice()
-        namn = bostad_val()
-        kolumn = kolumn_logic(omrade,prisklass)
-        summa = summa_ekv(namn,year,kolumn)
-        if namn == lgh:           #denna del gör att användare få se vilket bostadstyp de valde tidigare
-            levnad = "lägenheter"       
-        elif namn  == villa:
-            levnad == "Villor" 
-        print(f"\nSumman av elpriserna i {levnad} under året {year} i {namn[0][kolumn]} var {summa}")    
-        break  
-                                
-    elif user_choice_menu == "3": #Om användaren skriver "3" så kommer de att påkalla medelvärde funktionen
-        omrade = omrade_val()
-        prisklass = prisklass_val() #Dessa funktioner är det som gör att användaren få möjligheten till att välja 
-        namn = bostad_val()
-        year = year_choice()
-        kolumn = kolumn_logic(omrade,prisklass)
-        medel = medelvarde_ekv(namn,year,kolumn)
-        if namn == lgh:           #denna del gör att användare få se vilket bostadstyp de valde tidigare
-            levnad = "lägenheter"
-        elif namn == villa:
-            levnad == "Villor"
-        print(f"\nMedelvärdet av elpriserna i {levnad} under året {year} i {namn[0][kolumn]} var {medel}")
-        break
-    elif user_choice_menu == "4": #Om användaren skriver "4" så kommer de att påkalla hitta största värdet funktionen
-        omrade = omrade_val()
-        prisklass = prisklass_val()
-        namn = bostad_val()
-        year = year_choice()
-        kolumn = kolumn_logic(omrade,prisklass)
-        storsta , manad = storsta_ekv(namn,year,kolumn)
-        print(f"\nEl priset var som högst under {year} i {manad} på {storsta} öre / Kwh ")
-        break
-    elif user_choice_menu == "5": #Om användaren skriver "5" så kommer de att påkalla hitta minsta värdet funktionen
-        omrade = omrade_val()
-        prisklass = prisklass_val()
-        namn = bostad_val()
-        year = year_choice()
-        kolumn = kolumn_logic(omrade,prisklass)
-        minsta,manad = minsta_ekv(namn,year,kolumn)
-        print(f"\nPriset på el under {year} var som lägst under {manad} på {minsta} öre / Kwh")
-        break
-    elif user_choice_menu == "6": #Om användaren skriver ""6 så kommer de att påkalla analys funktionen
-        namn = bostad_val()
-        if namn == lgh:           #denna del gör att användare få se vilket bostadstyp de valde tidigare
-            levnad = "lägenheter"
-        elif namn == villa:
-            levnad = "Villor"
-        year = year_choice()
-        analys(namn,year,levnad)
-        break
-    elif user_choice_menu == "7": #Om användaren skriver "7" så kommer de att avsluta loppen
-        print("Program avslutas")
-        break
-    else:  #Om användaren skriver något annat så kommer de få möjlighet att försöka  igen
-        print("\nOgiltigt värde, försök igen")

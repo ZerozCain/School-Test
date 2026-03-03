@@ -107,6 +107,8 @@ def sum_list(year, column, list):
 
             if (type(row[column]) is float) or (type(row[column]) is int): # Makes sure that alla the values in row[column] can be summed this check comes up in almost all my functions
                 sum += row[column]
+        elif row[0] == str(year+1):
+            break
 
     return sum
 
@@ -114,7 +116,7 @@ def sum_list(year, column, list):
 # Deluppgift III: Funktioner för deluppgift III i ordning.
 # Skriv din kod här:
 def average_list(year, column, list): # Copy of sum_list() function but with an added index variable to be able to calculate the average
-    sum = 0 
+    summa = 0 
     index = 0 
 
     for row in list:
@@ -122,8 +124,10 @@ def average_list(year, column, list): # Copy of sum_list() function but with an 
             if (type(row[column]) is float) or (type(row[column]) is int):
                 sum += row[column]
                 index += 1
+        elif row[0] == str(year+1):
+            break
 
-    average = sum/index # Self explanitory, divides the sum by the index to get the average
+    average = summa/index # Self explanitory, divides the sum by the index to get the average
 
     return average
 
@@ -131,32 +135,38 @@ def average_list(year, column, list): # Copy of sum_list() function but with an 
 # Deluppgift IV: Funktioner från deluppgift IV i ordning.
 # Skriv din kod här:
 def max_value(year, column, list):
-    max = float("-inf") # Sets the base value of max to be equial to -infinity
+    maximum = float("-inf") # Sets the base value of max to be equial to -infinity
     month = ""
 
     for row in list: # Refer to sum_list() function for this bit of code until the next comment
         if row[0] == str(year):
             if (type(row[column]) is float) or (type(row[column]) is int):
 
-                if row[column] >= max: # If the row[column] is greater then or equal to the max then it sets max that new value as well as assigning the month of the current value
-                    max = row[column]
+                if row[column] >= maximum: # If the row[column] is greater then or equal to the max then it sets max that new value as well as assigning the month of the current value
+                    maximum = row[column]
                     month = row[1]
-    return max, month
+        elif row[0] == str(year+1):
+            break
+
+    return maximum, month
 
 # Deluppgift V: Funktioner från deluppgift V i ordning.
 # Skriv din kod här:
 def min_value(year, column, list): # Copy of max_value() but with min instead so start out by setting it to a large number i.e. +infinity, as well as setting a new minimum whenerever one is found
-    min = float("inf")
+    minimum = float("inf")
     month = ""
 
     for row in list:
         if row[0] == str(year):
             if (type(row[column]) is float) or (type(row[column]) is int):
 
-                if row[column] <= min:
-                    min = row[column]
+                if row[column] <= minimum:
+                    minimum = row[column]
                     month = row[1]
-    return min, month
+        elif row[0] == str(year+1):
+            break
+
+    return minimum, month
 
 
 # Deluppgift VI: Funktioner från deluppgift IV i ordning.

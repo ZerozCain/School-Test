@@ -4,26 +4,27 @@
 # Placera dina modulimpoter här:
 import csv
 import matplotlib.pyplot as plt
-from matplotlib.pyplot import figure
+from kamratgranskning_del1 import medelvarde_ekv, storsta_ekv, minsta_ekv
 
 # Placera ev. nya funktioner som används i flera deluppgifter här:
 # Skriv din ev. kod här:
-lgh_data = []
-villa_data = []
+lghData = []
+villaData = []
 
 def load_files():
-    global lgh_data, villa_data
-    data["L"] = file_to_list("lghpriser.csv")
-    lgh_data = file_to_list("lghpriser.csv")
+    global lghData, villaData
+    lghData = file_to_list("lghpriser.csv")
+    data["L"] = lghData
     print("Skriver ut lgh data:\n")
     for row in data["L"][:3]:
         print(row)
 
-    data["V"] = file_to_list("villapriser.csv")
-    villa_data = file_to_list("villapriser.csv")
+    villaData = file_to_list("villapriser.csv")
+    data["V"] = villaData
     print("Skriver ut lgh data:\n")
     for row in data["V"][:3]:
         print(row)
+
 
 def year_input():
     while True:
@@ -41,7 +42,8 @@ def year_input():
             print("\033[1;31;41m", end = "")
             print("Ogiltig input, välj ett år [2018-2025] och inte en bokstav din jävel!")
             print("\033[0;37;40m")
-        
+
+
 def column_input():
     while True:
         print("\nSE1-Fast-1 [1]  | SE1-Fast-3 [2]  | SE1-Rörligt [3]  | SE1-Anvisat [4]")
@@ -62,7 +64,8 @@ def column_input():
             print("Ogiltig input, välj en siffra [1-16] och inte en bokstav din jävel!")
             print("\033[0;37;40m")
 
-def price_range():
+
+def price_catagory():
     while True:
         try:
             price_input = (int(input("\nAnge ett prisområde, Fast-1 [1], Fast-3 [2], Rörligt [3], Anvisat [4]: ")))
@@ -77,6 +80,7 @@ def price_range():
             print("Ogiltig input, välj en siffra [1-4] Inte en bokstav din jävel!")
             print("\033[0;37;40m")
 
+
 def list_input():
     while True:
         list_input = (input("\nVälj listan som du vill arbeta med, Lägenhets lista [L] eller Villa lista [V]: ")).upper()
@@ -87,65 +91,19 @@ def list_input():
             print("Ogiltig input, välj bokstav L eller V")
             print("\033[0;37;40m")
 
+
 def inputs(menu_option):
     if menu_option == 1:
         pass
     elif menu_option == 2:
         return year_input(), list_input()
     elif menu_option == 3:
-        return year_input(), price_range()
+        return year_input(), price_catagory()
     elif menu_option == 4:
         return year_input(), column_input(), list_input()
-    elif menu_option == 6:
-        pass
+    elif menu_option == 5:
+        return price_catagory()
 
-#=====================================================================================================================================================================================================================================================
-######################################################
-# Code from my partners file to get analys() to work #
-######################################################
-def summa_ekv(namn,year,kolumn):  #Funktion som sumerar en hel kolumn 
-    sum = 0 # Declaring the variable sum and making it equal to 0
-
-    for row in namn:
-
-        if row[0] == str(year): # Cheacks that the year on row[0] is the same as the input year
-
-            if (type(row[kolumn]) is float) or (type(row[kolumn]) is int): # Makes sure that alla the values in row[column] can be summed this check comes up in almost all my functions
-                sum += row[kolumn]
-
-    return sum
-
-def medelvarde_ekv(namn,year,kolumn): #Tar summan från tidigare funktion och delar den på antalet månader som ett år har 
-    summa = summa_ekv(namn,year,kolumn)
-    medel = summa/12
-    return(round(medel,2)) #Runda av medelvärdet till två desimaler 
-     
-def storsta_ekv(namn,year,kolumn): # Modifierad så att fungerar med nya störe listorna
-    max = float("-inf")
-    month = ""
-
-    for row in namn:
-        if row[0] == str(year):
-            if (type(row[kolumn]) is float) or (type(row[kolumn]) is int):
-
-                if row[kolumn] >= max:
-                    max = row[kolumn]
-                    month = row[1]
-    return max, month
-
-def minsta_ekv(namn,year,kolumn): # Modifierad så att fungerar med nya störe listorna
-    min = float("inf")
-    month = ""
-
-    for row in namn:
-        if row[0] == str(year):
-            if (type(row[kolumn]) is float) or (type(row[kolumn]) is int):
-
-                if row[kolumn] <= min:
-                    min = row[kolumn]
-                    month = row[1]
-    return min, month
-#=====================================================================================================================================================================================================================================================
 
 # Deluppgift 1: Funktioner för deluppgift 1 i ordning.
 # Skriv din kod här:
@@ -167,46 +125,10 @@ def file_to_list(file):
 
 # Deluppgift 2: Funktioner för deluppgift 2 i ordning. Ska använda funktioner från deluppgift VI på Del1 i modulen och ev. modifiera dem.
 # Skriv din kod här:
-
-#=====================================================================================================================================================================================================================================================
-###########################################
-# My partners orginal code for reference #
-###########################################
-
-#def analys(namn,year,levnad):
-#    kolumn = 2
-#    while kolumn <= 9:
-#        storsta , manad = (storsta_ekv(namn,year,kolumn))
-#        analys_lista.append(storsta)
-#        analys_lista.append(manad)
-#        minsta , manad = (minsta_ekv(namn,year,kolumn))
-#        analys_lista.append(minsta)
-#        analys_lista.append(manad)
-#        Medel = (medelvarde_ekv(namn,year,kolumn))
-#        analys_lista.append(Medel)
-#        kolumn+=1
-#    os.system("cls")                                            #Tar bort alltig som tidigare printades i terminalen
-#    titel = f"Analys av elpriserna för kategorin {levnad} år {year}" 
-#    print(f"{titel:^110}")
-#    print(f"{"="*len(titel):^110}")                             #Linjen under titlen anpasar längden av titel beroende på vad som jämförs 
-#    print(f"{"Fast pris 3 år (öre/Kwh)":^55}{"Rörligt pris (öre/Kwh)":^55}")
-#    print(f"{"Prisomr.":<10}{"Max  -":>10}{"(Mån)":>10}{"Min  -":>10}{"(mån)":>10}{"Medel":>10}{"Max  -":>10}{"(Mån)":>10}{"Min  -":>10}{"(mån)":>10}{"Medel":>10}")
-#    print(f"-"*110)
-#    print(f"{"SE1":<10}{analys_lista[0]:>10}{analys_lista[1]:>10}{analys_lista[2]:>10}{analys_lista[3]:>10}{analys_lista[4]:>10}{analys_lista[5]:>10}{analys_lista[6]:>10}{analys_lista[7]:>10}{analys_lista[8]:>10}{analys_lista[9]:>10}")
-#    print(f"{"SE2":<10}{analys_lista[10]:>10}{analys_lista[11]:>10}{analys_lista[12]:>10}{analys_lista[13]:>10}{analys_lista[14]:>10}{analys_lista[15]:>10}{analys_lista[16]:>10}{analys_lista[17]:>10}{analys_lista[18]:>10}{analys_lista[19]:>10}")
-#    print(f"{"SE3":<10}{analys_lista[20]:>10}{analys_lista[21]:>10}{analys_lista[22]:>10}{analys_lista[23]:>10}{analys_lista[24]:>10}{analys_lista[25]:>10}{analys_lista[26]:>10}{analys_lista[27]:>10}{analys_lista[28]:>10}{analys_lista[29]:>10}")
-#    print(f"{"SE4":<10}{analys_lista[30]:>10}{analys_lista[31]:>10}{analys_lista[32]:>10}{analys_lista[33]:>10}{analys_lista[34]:>10}{analys_lista[35]:>10}{analys_lista[36]:>10}{analys_lista[37]:>10}{analys_lista[38]:>10}{analys_lista[39]:>10}")
-#    print(f"="*110)
-#=====================================================================================================================================================================================================================================================
-#=====================================================================================================================================================================================================================================================
-##########################################################
-# Modification of my partners code to solve deluppgift 2 #
-##########################################################
-
 def analys(year, price_list):
-    if price_list == lgh_data: 
+    if price_list is lghData: 
         customer = "lägenhetskund"
-    elif price_list == villa_data:
+    elif price_list is villaData:
         customer = "villakund"
 
     titel = f"Analys av elpriserna för kategorin {customer} år {year}"
@@ -221,7 +143,7 @@ def analys(year, price_list):
     print(f"-"*208)
     for SE in range(0, (len(price_list[0])-2), 4): # Makes SE be 0, 4, 8, 12,... and forever on dependiing on how long the list that is inputed is
         print(f"{price_list[0][SE+2]:<10.3s}", end="")
-        
+        #*_f_1 = fast pris 1 år , *_f_3 = fast pris 3 år , *_r = rörligt pris, *_a = anvisat pris
         
         min_f_1, min_month_f_1 = minsta_ekv(price_list, year, SE+2)
         max_f_1, max_month_f_1 = storsta_ekv(price_list, year, SE+2)
@@ -244,11 +166,11 @@ def analys(year, price_list):
         print(f"{min_a:>9.2f}{min_month_a:>7.3s}{max_a:>13.2f}{max_month_a:>7.3s}{avg_a:>12.2f} |", end="")
         
         print()
-#=====================================================================================================================================================================================================================================================
+
 
 # Deluppgift 3: Funktioner för deluppgift 3 i ordning.
 # Skriv din kod här:
-def plot_rorlig_fast_1(year, price_r):
+def plot_rorlig_fast_1(year, price_cat):
     x = []
 
     y_fast_1_lgh = []
@@ -257,17 +179,17 @@ def plot_rorlig_fast_1(year, price_r):
     y_fast_1_villa = []
     y_rorlig_villa = []
 
-    for row in lgh_data:
+    for row in lghData:
         if row[0] == str(year):
             x.append(row[1][:3])
-            y_fast_1_lgh.append(row[price_r+1])
-            y_rorlig_lgh.append(row[price_r+3])
-    for row in villa_data:
+            y_fast_1_lgh.append(row[price_cat+1])
+            y_rorlig_lgh.append(row[price_cat+3])
+    for row in villaData:
         if row[0] == str(year):
-            y_fast_1_villa.append(row[price_r+1])
-            y_rorlig_villa.append(row[price_r+3])
+            y_fast_1_villa.append(row[price_cat+1])
+            y_rorlig_villa.append(row[price_cat+3])
 
-    figure(figsize=(10,10))
+    plt.figure(figsize=(10,10))
 
     plt.plot(x, y_fast_1_lgh, color = "green", label = "Fast 1 år - Lgh")
     plt.plot(x, y_fast_1_villa, color = "red", label = "Fast 1 år - Villa")
@@ -276,7 +198,7 @@ def plot_rorlig_fast_1(year, price_r):
     
     plt.legend(loc = 2)
     plt.grid()
-    plt.title(f"Elpriser frisområde {lgh_data[0][price_r+1][0:3]} år {year}")
+    plt.title(f"Elpriser frisområde {lghData[0][price_cat+1][0:3]} år {year}")
 
     plt.xlabel("Månad")
     plt.ylabel("Pris [öre/kWh]")
@@ -326,33 +248,121 @@ def change_faktor(year, column, price_list):
         if row[0] == str(year+1):
             break
     
-    figure(figsize=(10,10))
+    plt.figure(figsize=(10,10))
 
     plt.legend(loc = 2)
     plt.grid()
-    plt.title(f"Månatlig föränding av elpriset för {lgh_data[0][column]}")
+    plt.title(f"Månatlig föränding av elpriset för {lghData[0][column]}")
 
     plt.bar(x_month, y_change, color = "red", width = 0.4)
     plt.xlabel("Månad")
     plt.ylabel("Föränding [%]")
 
     plt.show()
-            
-    
 
 
 # Deluppgift 5: Funktioner för deluppgift 5 i ordning.
 # Skriv din kod här:
+def point_diagram(price_catagory):
+    years_in_lists = []
+    for row in lghData[1::12]:
+        for year in row:
+            if int(year) not in years_in_lists:
+                years_in_lists.append(int(year))
+                break
+    years = f"{years_in_lists[0]}-{years_in_lists[len(years_in_lists)-1]}"
+    catagory = lghData[0][price_catagory+1][4:]
+
+    print("="*80)
+    print(f"{f"Lägsta-, högsta- och medelvärden av elpricerna under":^80}")
+    print(f"{f"tidsperioden {years} för {catagory}":^80}\n")
+    print(f"{"Prisomr.":^10}{"lägsta":^10}{"år":^10}{"mån":^10}", end = "")
+    print(f"{"högsta":^10}{"år":^10}{"mån":^10}{"medel":^10}")
+    print(f"-"*80)
+    min_list_lgh = []
+    max_list_lgh = []
+    avg_list_lgh = []
+
+    min_list_villa = []
+    max_list_villa = []
+    avg_list_villa = []
+
+    x_SE = []
+    for price_list in data:
+        if price_list == "L":
+            print("Kategori Lägenhetskund:")
+        else:
+            print("Kategori villakund:")
+        
+        for SE in range(0, (len(data[price_list][0])-2), 4):
+            print(f"{data[price_list][0][SE+5]:^10.3s}", end="")
+            if data[price_list][0][SE+5][0:3] not in x_SE:
+                x_SE.append(data[price_list][0][SE+5][0:3])
+            current_min = float("inf")
+            current_max = float("-inf")
+            avg = 0
+
+            for year in years_in_lists:
+                temp = minsta_ekv(data[price_list], year, SE+price_catagory+1)[0]
+                if temp <= current_min:
+                    current_min, min_month = minsta_ekv(data[price_list], year, SE+price_catagory+1)
+                    min_year = year
+
+                temp = storsta_ekv(data[price_list], year, SE+price_catagory+1)[0]
+                if temp >= current_max:
+                    current_max, max_month = storsta_ekv(data[price_list], year, SE+price_catagory+1)
+                    max_year = year
+                avg = avg + medelvarde_ekv(data[price_list], year, SE+price_catagory+1)
+
+            avg = avg/len(years_in_lists)
+
+            if price_list == "L":
+                min_list_lgh.append(current_min)
+                max_list_lgh.append(current_max)
+                avg_list_lgh.append(avg)
+            else:
+                min_list_villa.append(current_min)
+                max_list_villa.append(current_max)
+                avg_list_villa.append(avg)
+            
+            print(f"{current_min:^10.2f}{min_year:^10}{min_month:^10.3s}", end = "")
+            print(f"{current_max:^10.2f}{max_year:^10}{max_month:^10.3s}{avg:^10.2f}")
+
+    plt.figure(figsize=(20,10))
+    #subplot 1
+    plt.subplot(1,2,1)
+    plt.scatter(x_SE, min_list_lgh, color = "Blue", label = "Lägsta elpris.")
+    plt.scatter(x_SE, max_list_lgh, color = "Goldenrod", label = "Högsta elpris.")
+    plt.scatter(x_SE, avg_list_lgh, color = "Green", label = "Medelvärde.")
+    plt.legend()
+    plt.title(f"Elpriser \nLägsta-, högsta- och medelvärden av elpricerna under tidsperioden {years}. \n Kategori lägenhetskund: {catagory}")
+    plt.xlabel("Prisområden")
+    plt.ylabel("Pris [öre/kWh]")
+    plt.grid()
+
+    #subplot 2
+    plt.subplot(1,2,2)
+    plt.scatter(x_SE, min_list_villa, color = "Blue", label = "Lägsta elpris.")
+    plt.scatter(x_SE, max_list_villa, color = "Goldenrod", label = "Högsta elpris.")
+    plt.scatter(x_SE, avg_list_villa, color = "Green", label = "Medelvärde.")
+    plt.legend()
+    plt.title(f"Elpriser \nLägsta-, högsta- och medelvärden av elpricerna under tidsperioden {years}. \n Kategori villakun: {catagory}")
+    plt.xlabel("Prisområden")
+    plt.ylabel("Pris [öre/kWh]")
+    plt.grid()
+
+    plt.show()
+    
 
 
 # Huvudprogram med Meny för deluppgift 0. Använd menyrubriker enl. uppgiftsbeskrivningen.
 # Skriv din kod här:
 def menu():
-    global lgh_data, villa_data, data
-    data = {"L" : None, "V" : None}
+    global data
+    data = {"L" : lghData, "V" : villaData}
     work_list = None
-
-    print("="*208)
+    
+    print("="*210)
     print("\nProgram för att läsa in och analysera resultatet i uppgift 1 - 5\n")
 
     while True:
@@ -371,35 +381,42 @@ def menu():
             print("\n\033[1;31;41m", end = "")
             print("Mata in ett nummer mellan [1-6] och inte en bokstav din jävel!")
             print("\033[0;37;40m")
+            continue
 
         if base_input == 1:
             load_files()
-            
             base_input = None
 
-        elif (base_input == 2) and (len(lgh_data) != 0) and (len(villa_data) != 0):
+        elif (base_input == 2) and (len(data["L"]) != 0) and (len(data["V"]) != 0):
             year, work_list = inputs(base_input)
             analys(year, data[work_list])
 
             base_input = None
 
-        elif (base_input == 3):
-            year, p_r = inputs(base_input)
-            plot_rorlig_fast_1(year, p_r)
+        elif (base_input == 2) and (len(data["L"]) != 0) and (len(data["V"]) != 0):
+            year, price_catagory = inputs(base_input)
+            plot_rorlig_fast_1(year, price_catagory)
 
             base_input = None
 
-        elif (base_input == 4):
+        elif (base_input == 4) and (len(data["L"]) != 0) and (len(data["V"]) != 0):
             year, column, price_list = inputs(base_input)
             change_faktor(year, column, data[price_list])
 
             base_input = None
 
-        elif (base_input == 5):
-            pass
+        elif (base_input == 5) and (len(data["L"]) != 0) and (len(data["V"]) != 0):
+            point_diagram(inputs(base_input))
+
+            base_input = None
 
         elif (base_input == 6):
             break
+
+        elif (len(data["L"]) == 0) and (len(data["V"]) == 0):
+            print("\n\033[1;31;41m", end = "")
+            print("Måste köra meny alternativ 1 för att få köra någon av meny alternativ [2-5]")
+            print("\033[0;37;40m")
 
 
 menu()
