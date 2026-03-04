@@ -99,18 +99,18 @@ def print_lista(namn):
 # Deluppgift II: Funktioner för deluppgift II i ordning.
 # Skriv din kod här:
 def sum_list(year, column, list):
-    sum = 0 # Declaring the variable sum and making it equal to 0
+    summa = 0 # Declaring the variable sum and making it equal to 0
 
     for row in list:
 
         if row[0] == str(year): # Cheacks that the year on row[0] is the same as the input year
 
             if (type(row[column]) is float) or (type(row[column]) is int): # Makes sure that alla the values in row[column] can be summed this check comes up in almost all my functions
-                sum += row[column]
+                summa += row[column]
         elif row[0] == str(year+1):
             break
 
-    return sum
+    return summa
 
 
 # Deluppgift III: Funktioner för deluppgift III i ordning.
@@ -122,7 +122,7 @@ def average_list(year, column, list): # Copy of sum_list() function but with an 
     for row in list:
         if row[0] == str(year):
             if (type(row[column]) is float) or (type(row[column]) is int):
-                sum += row[column]
+                summa += row[column]
                 index += 1
         elif row[0] == str(year+1):
             break
@@ -209,7 +209,7 @@ def analysis(year, price_list): # Makes a table of contets with, min, max and av
 
 # Huvudprogram med Meny. Använd menyrubriker enl. uppgiftsbeskrivningen.
 # Skriv din kod här:
-def year_input():
+def year_input(): # Handles user input for the year
     while True:
         try:
             year_input = int(input("Välj året som du vill arbeta med, [2024-2025]: "))
@@ -224,7 +224,7 @@ def year_input():
             print("Ogiltig input, välj ett år, [2024-2025]")
             print("\033[0;37;40m")
         
-def column_input():
+def column_input(): # Handles user input for the column
     while True:
         print("SE1-Fast [1] | SE1-Rörligt [2]")
         print("SE2-Fast [3] | SE2-Rörligt [4]")
@@ -244,7 +244,7 @@ def column_input():
             print("Ogiltig input, välj en siffra, [1-8]")
             print("\033[0;37;40m")
 
-def list_input():
+def list_input(): # Handles user input for the list
     while True:
         list_input = (input("Välj listan som du vill arbeta med, Lägenhets lista [L] eller Villa lista [V]: ")).upper()
         if list_input == "L" or list_input == "V":
@@ -254,7 +254,7 @@ def list_input():
             print("Ogiltig input, välj bokstav L eller V")
             print("\033[0;37;40m")
 
-def inputs(menu_option):
+def inputs(menu_option): # returns what each function requires to work depending on what menu_option is input
     if menu_option == 1:
         return list_input()
     elif menu_option in range(2,6):

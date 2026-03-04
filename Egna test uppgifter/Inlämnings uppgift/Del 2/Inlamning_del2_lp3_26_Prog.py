@@ -1,31 +1,32 @@
 # Skriv en inledande kommentar som talar om vad programmet gör. 
-
+# Program for reading and analyzing csv files
 
 # Placera dina modulimpoter här:
 import csv
 import matplotlib.pyplot as plt
-from kamratgranskning_del1 import medelvarde_ekv, storsta_ekv, minsta_ekv
+from kamratgranskning_del1 import medelvarde_ekv, storsta_ekv, minsta_ekv # only importing what is actually used in the program
 
 # Placera ev. nya funktioner som används i flera deluppgifter här:
 # Skriv din ev. kod här:
+# Declaring two lists in the begining of the program so that they will be stored globaly and not just in functions
 lghData = []
 villaData = []
 
-def load_files():
+def load_files(): # Loads predtermined CSV flie that will be used later
     global lghData, villaData
     lghData = file_to_list("lghpriser.csv")
     data["L"] = lghData
-    print("Skriver ut lgh data:\n")
+    print("\nSkriver ut lgh data:")
     for row in data["L"][:3]:
         print(row)
 
     villaData = file_to_list("villapriser.csv")
     data["V"] = villaData
-    print("Skriver ut lgh data:\n")
+    print("\nSkriver ut villa data:")
     for row in data["V"][:3]:
         print(row)
 
-
+# Only used to handle user inputs as well as some slight error handeling
 def year_input():
     while True:
         try:
@@ -43,7 +44,7 @@ def year_input():
             print("Ogiltig input, välj ett år [2018-2025] och inte en bokstav din jävel!")
             print("\033[0;37;40m")
 
-
+# Ref line 29
 def column_input():
     while True:
         print("\nSE1-Fast-1 [1]  | SE1-Fast-3 [2]  | SE1-Rörligt [3]  | SE1-Anvisat [4]")
@@ -64,7 +65,7 @@ def column_input():
             print("Ogiltig input, välj en siffra [1-16] och inte en bokstav din jävel!")
             print("\033[0;37;40m")
 
-
+# Ref line 29
 def price_catagory():
     while True:
         try:
@@ -80,7 +81,7 @@ def price_catagory():
             print("Ogiltig input, välj en siffra [1-4] Inte en bokstav din jävel!")
             print("\033[0;37;40m")
 
-
+# Ref line 29
 def list_input():
     while True:
         list_input = (input("\nVälj listan som du vill arbeta med, Lägenhets lista [L] eller Villa lista [V]: ")).upper()
@@ -91,11 +92,9 @@ def list_input():
             print("Ogiltig input, välj bokstav L eller V")
             print("\033[0;37;40m")
 
-
+# Handles all the user choices and returnes them
 def inputs(menu_option):
-    if menu_option == 1:
-        pass
-    elif menu_option == 2:
+    if menu_option == 2:
         return year_input(), list_input()
     elif menu_option == 3:
         return year_input(), price_catagory()
@@ -107,13 +106,13 @@ def inputs(menu_option):
 
 # Deluppgift 1: Funktioner för deluppgift 1 i ordning.
 # Skriv din kod här:
-def file_to_list(file):
+def file_to_list(file): # Opens a file for reading and converts it to a list, closes it and then returns the list
     csv_file = open(file, "r", encoding = "UTF-8", newline = "\n")
     csv_reader = csv.reader(csv_file, delimiter=";")
     work_list = []
     
     for row in csv_reader:
-        for i in range(2, len(row)):
+        for i in range(2, len(row)): # Converts all "float" strings into actual floats
             try:
                 row[i] = float(row[i])
             except:
@@ -125,12 +124,11 @@ def file_to_list(file):
 
 # Deluppgift 2: Funktioner för deluppgift 2 i ordning. Ska använda funktioner från deluppgift VI på Del1 i modulen och ev. modifiera dem.
 # Skriv din kod här:
-def analys(year, price_list):
+def analys(year, price_list): # Prints an analisys of the given year an list
     if price_list is lghData: 
         customer = "lägenhetskund"
     elif price_list is villaData:
         customer = "villakund"
-
     titel = f"Analys av elpriserna för kategorin {customer} år {year}"
 
     print(f"\n{titel:^210}")
@@ -141,7 +139,7 @@ def analys(year, price_list):
     print(f"{"Max - ":>10}{"(Mån)":<10}{"Min - ":>10}{"(mån)":<10}{"Medel |":^10}", end = "")
     print(f"{"Max - ":>10}{"(Mån)":<10}{"Min - ":>10}{"(mån)":<10}{"Medel |":^10}")
     print(f"-"*208)
-    for SE in range(0, (len(price_list[0])-2), 4): # Makes SE be 0, 4, 8, 12,... and forever on dependiing on how long the list that is inputed is
+    for SE in range(0, (len(price_list[0])-2), 4): # Makes SE be 0, 4, 8, 12,... and forever on depending on how long the list that is inputed is
         print(f"{price_list[0][SE+2]:<10.3s}", end="")
         #*_f_1 = fast pris 1 år , *_f_3 = fast pris 3 år , *_r = rörligt pris, *_a = anvisat pris
         
@@ -170,7 +168,7 @@ def analys(year, price_list):
 
 # Deluppgift 3: Funktioner för deluppgift 3 i ordning.
 # Skriv din kod här:
-def plot_rorlig_fast_1(year, price_cat):
+def plot_rorlig_fast_1(year, price_cat): # Creates a visual graph of "Fast 1 år" and "Rörlig" for both lgh and villa
     x = []
 
     y_fast_1_lgh = []
@@ -209,15 +207,15 @@ def plot_rorlig_fast_1(year, price_cat):
 
 # Deluppgift 4: Funktioner för deluppgift 4 i ordning.
 # Skriv din kod här:
-def change_factor_ekv(price, price_prev):
+def change_factor_ekv(price, price_prev): # Just the ekvation for the change factor that was provided
     change = ((price - price_prev)/price_prev)*100
     return change
 
-def change_faktor(year, column, price_list):
+def change_faktor(year, column, price_list): # Creates a visual bar graph of the change factor for a given year, SE*-* and list
     x_month = []
     y_change = []
-
-    if year == 2018:
+# Cheacks if the year is equal to 2018 or not, if it is it will skip the first months change factor seeing as we can't pull info from dec 2017
+    if year == 2018: 
         last_month = None
         year_row = 1
     else:
@@ -229,8 +227,8 @@ def change_faktor(year, column, price_list):
                     break
             except:
                 pass
-    for row in price_list[year_row:]:
 
+    for row in price_list[year_row:]:
         if last_month == None:
             for index in price_list:
                 if index[0] == str(year):
@@ -242,10 +240,7 @@ def change_faktor(year, column, price_list):
             x_month.append(row[1][:3])
             y_change.append(change_factor_ekv(row[column], last_month))
             last_month = row[column]
-            print(last_month)
-            print(x_month)
-            print(y_change)
-        if row[0] == str(year+1):
+        elif row[0] == str(year+1): # Stops the scan if we are one year ahead of the input year
             break
     
     plt.figure(figsize=(10,10))
@@ -263,7 +258,7 @@ def change_faktor(year, column, price_list):
 
 # Deluppgift 5: Funktioner för deluppgift 5 i ordning.
 # Skriv din kod här:
-def point_diagram(price_catagory):
+def point_diagram(price_catagory): # Creates a scatter graph of all the years in each list and each price range, to find the max, min and average prices
     years_in_lists = []
     for row in lghData[1::12]:
         for year in row:
@@ -357,7 +352,7 @@ def point_diagram(price_catagory):
 
 # Huvudprogram med Meny för deluppgift 0. Använd menyrubriker enl. uppgiftsbeskrivningen.
 # Skriv din kod här:
-def menu():
+def menu(): # Just the menu for the entire programe, its called at the end of everything as the initiation point sort of like a main function in other programs
     global data
     data = {"L" : lghData, "V" : villaData}
     work_list = None
