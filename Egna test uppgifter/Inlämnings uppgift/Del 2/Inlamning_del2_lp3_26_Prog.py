@@ -14,17 +14,23 @@ villaData = []
 
 def load_files(): # Loads predtermined CSV flie that will be used later
     global lghData, villaData
-    lghData = file_to_list("lghpriser.csv")
-    data["L"] = lghData
-    print("\nSkriver ut lgh data:")
-    for row in data["L"][:3]:
-        print(row)
-
-    villaData = file_to_list("villapriser.csv")
-    data["V"] = villaData
-    print("\nSkriver ut villa data:")
-    for row in data["V"][:3]:
-        print(row)
+    try:
+        lghData = file_to_list("lghpriser.csv")
+        data["L"] = lghData
+        print("\nSkriver ut lgh data:")
+        for row in data["L"][:3]:
+            print(row)
+    except:
+        print("Ladda ner Lghdata filen")
+    
+    try:
+        villaData = file_to_list("villapriser.csv")
+        data["V"] = villaData
+        print("\nSkriver ut villa data:")
+        for row in data["V"][:3]:
+            print(row)
+    except:
+        print("Ladda ner Villadata filen")
 
 # Only used to handle user inputs as well as some slight error handeling
 def year_input():
@@ -81,6 +87,22 @@ def price_catagory():
             print("Ogiltig input, välj en siffra [1-4] Inte en bokstav din jävel!")
             print("\033[0;37;40m")
 
+def price_range():
+    while True:
+        try:
+            price_input = (int(input("\nAnge ett prisområde, SE1 [1], SE2 [2], SE3 [3], SE4 [4]: ")))
+            if price_input in range(1,5):
+                return 1+((price_input-1)*4)
+            else:
+                print("\033[1;31;41m", end = "")
+                print("Ogiltig input, välj en siffra, [1-4], SE1 [1], SE2 [2], SE3 [3], SE4 [4]: ")
+                print("\033[0;37;40m")
+        except:
+            print("\033[1;31;41m", end = "")
+            print("Ogiltig input, välj en siffra [1-4] Inte en bokstav din jävel!")
+            print("\033[0;37;40m")
+
+
 # Ref line 29
 def list_input():
     while True:
@@ -97,7 +119,7 @@ def inputs(menu_option):
     if menu_option == 2:
         return year_input(), list_input()
     elif menu_option == 3:
-        return year_input(), price_catagory()
+        return year_input(), price_range()
     elif menu_option == 4:
         return year_input(), column_input(), list_input()
     elif menu_option == 5:
@@ -245,7 +267,6 @@ def change_faktor(year, column, price_list): # Creates a visual bar graph of the
     
     plt.figure(figsize=(10,10))
 
-    plt.legend(loc = 2)
     plt.grid()
     plt.title(f"Månatlig föränding av elpriset för {lghData[0][column]}")
 
@@ -349,7 +370,6 @@ def point_diagram(price_catagory): # Creates a scatter graph of all the years in
     plt.show()
     
 
-
 # Huvudprogram med Meny för deluppgift 0. Använd menyrubriker enl. uppgiftsbeskrivningen.
 # Skriv din kod här:
 def menu(): # Just the menu for the entire programe, its called at the end of everything as the initiation point sort of like a main function in other programs
@@ -388,7 +408,7 @@ def menu(): # Just the menu for the entire programe, its called at the end of ev
 
             base_input = None
 
-        elif (base_input == 2) and (len(data["L"]) != 0) and (len(data["V"]) != 0):
+        elif (base_input == 3) and (len(data["L"]) != 0) and (len(data["V"]) != 0):
             year, price_catagory = inputs(base_input)
             plot_rorlig_fast_1(year, price_catagory)
 
@@ -412,6 +432,5 @@ def menu(): # Just the menu for the entire programe, its called at the end of ev
             print("\n\033[1;31;41m", end = "")
             print("Måste köra meny alternativ 1 för att få köra någon av meny alternativ [2-5]")
             print("\033[0;37;40m")
-
 
 menu()
