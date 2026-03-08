@@ -87,6 +87,7 @@ def price_catagory():
             print("Ogiltig input, välj en siffra [1-4] Inte en bokstav din jävel!")
             print("\033[0;37;40m")
 
+# Ref line 29
 def price_range():
     while True:
         try:
@@ -290,7 +291,7 @@ def point_diagram(price_catagory): # Creates a scatter graph of all the years in
     catagory = lghData[0][price_catagory+1][4:]
 
     print("="*80)
-    print(f"{f"Lägsta-, högsta- och medelvärden av elpricerna under":^80}")
+    print(f"{f"Lägsta-, högsta- och medelvärden av elpriserna under":^80}")
     print(f"{f"tidsperioden {years} för {catagory}":^80}\n")
     print(f"{"Prisomr.":^10}{"lägsta":^10}{"år":^10}{"mån":^10}", end = "")
     print(f"{"högsta":^10}{"år":^10}{"mån":^10}{"medel":^10}")
@@ -351,7 +352,7 @@ def point_diagram(price_catagory): # Creates a scatter graph of all the years in
     plt.scatter(x_SE, max_list_lgh, color = "Goldenrod", label = "Högsta elpris.")
     plt.scatter(x_SE, avg_list_lgh, color = "Green", label = "Medelvärde.")
     plt.legend()
-    plt.title(f"Elpriser \nLägsta-, högsta- och medelvärden av elpricerna under tidsperioden {years}. \n Kategori lägenhetskund: {catagory}")
+    plt.title(f"Elpriser \nLägsta-, högsta- och medelvärden av elpriserna under tidsperioden {years}. \n Kategori lägenhetskund: {catagory}")
     plt.xlabel("Prisområden")
     plt.ylabel("Pris [öre/kWh]")
     plt.grid()
@@ -362,7 +363,7 @@ def point_diagram(price_catagory): # Creates a scatter graph of all the years in
     plt.scatter(x_SE, max_list_villa, color = "Goldenrod", label = "Högsta elpris.")
     plt.scatter(x_SE, avg_list_villa, color = "Green", label = "Medelvärde.")
     plt.legend()
-    plt.title(f"Elpriser \nLägsta-, högsta- och medelvärden av elpricerna under tidsperioden {years}. \n Kategori villakun: {catagory}")
+    plt.title(f"Elpriser \nLägsta-, högsta- och medelvärden av elpriserna under tidsperioden {years}. \n Kategori villakun: {catagory}")
     plt.xlabel("Prisområden")
     plt.ylabel("Pris [öre/kWh]")
     plt.grid()
